@@ -7,7 +7,7 @@ import com.unidev.universe.responses.JwtResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public interface AuthService{
+public interface AuthService {
 
     User register(RegisterRequest registerRequest);
 
@@ -18,4 +18,8 @@ public interface AuthService{
     JwtResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
 
     boolean getUserByInfo(RegisterRequest request);
+
+    boolean isEnabled(String email);
+
+    boolean exists(String email);
 }

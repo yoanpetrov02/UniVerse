@@ -161,5 +161,14 @@ public class AuthServiceImpl implements AuthService {
 
         return passwordEncoder.matches(request.getPassword(), user.getPassword());
     }
+
+    public boolean isEnabled(String email) {
+        User user = userRepository.findByEmail(email);
+        return user.getEnabled();
+    }
+
+    public boolean exists(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
 }
 

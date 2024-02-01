@@ -8,6 +8,7 @@ import com.unidev.universe.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response){
+        if(!authService.exists(loginRequest.getEmail())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if(!authService.isEnabled(loginRequest.getEmail())){
+            return ResponseEntity.status(HttpStatus.LOCKED).build();
+        }
+
         return ResponseEntity.ok(authService.login(loginRequest, response));
     }
 

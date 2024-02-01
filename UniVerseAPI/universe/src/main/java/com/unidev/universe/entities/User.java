@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 /*
-* The User cass represents a single user entity
-* from the database.
-* */
+ * The User cass represents a single user entity
+ * from the database.
+ * */
 
 @Getter
 @Setter
@@ -33,7 +33,7 @@ public class User implements UserDetails {
     @Column(name = "email",nullable=false, unique=true)
     private String email;
 
-    @Column(name = "password",nullable=false)
+    @Column(name = "password", nullable=false)
     private String password;
 
     @Column(columnDefinition = "BYTEA")
@@ -51,7 +51,7 @@ public class User implements UserDetails {
 
     private Boolean isLocked = false;
 
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     public User(String username, String email, String password, UserRole userRole) {
         this.username = username;

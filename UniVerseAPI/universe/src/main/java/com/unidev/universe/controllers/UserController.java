@@ -1,5 +1,6 @@
 package com.unidev.universe.controllers;
 
+import com.unidev.universe.dto.UserDTO;
 import com.unidev.universe.requests.RegisterRequest;
 import com.unidev.universe.requests.UpdateProfileRequest;
 import com.unidev.universe.responses.UserResponse;
@@ -75,5 +76,22 @@ public class UserController {
         }
 
         return ResponseEntity.ok("Profile updated.");
+    }
+
+    @GetMapping("/registration-requests")
+    public ResponseEntity<List<UserDTO>> getUserRegistrationRequests(){
+        return ResponseEntity.ok(userService.getUserRegistrationRequests());
+    }
+
+    @PutMapping("/{userId}/approve")
+    public ResponseEntity<String> approveUser(@PathVariable Long userId){
+        userService.approveUser(userId);
+        return ResponseEntity.ok("User approved");
+    }
+
+    @DeleteMapping("/{userId}/reject")
+    public ResponseEntity<String> rejectUser(@PathVariable Long userId){
+        userService.rejectUser(userId);
+        return ResponseEntity.ok("User rejected.");
     }
 }

@@ -1,5 +1,6 @@
 package com.unidev.universe.services;
 
+import com.unidev.universe.dto.UserDTO;
 import com.unidev.universe.entities.User;
 import com.unidev.universe.repository.UserRepository;
 import com.unidev.universe.requests.UpdateProfileRequest;
@@ -9,10 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -90,5 +93,31 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public List<UserDTO> getUserRegistrationRequests(){
+        List<User> users = userRepository.findAllByEnabled(false);
+        List<UserDTO> responseData = new ArrayList<>();
+
+        for (User user: users) {
+            UserDTO response = new UserDTO();
+            response.setId(user.getId());
+            response.setUsername(user.getName());
+            response.setEmail(user.getEmail());
+            responseData.add(response);
+        }
+
+        return responseData;
+    }
+
+    @Transactional
+    public void approveUser(Long userId){
+        Optional<User> user = userRepository.findById(userId);
+        user.ifPresent(value -> value.setEnabled(true));
+    }
+
+    @Transactional
+    public void rejectUser(Long userId){
+        userRepository.deleteById(userId);
     }
 }

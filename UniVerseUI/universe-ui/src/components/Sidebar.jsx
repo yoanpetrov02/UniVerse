@@ -11,6 +11,7 @@ import SettingsIcon from '../assets/icons/icon-cog.svg'
 import useLogout from '../hooks/useLogout';
 import { FaUserAstronaut } from "react-icons/fa";
 import useProfilePicture from '../hooks/useProfilePicture';
+import { MdAdminPanelSettings } from "react-icons/md";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -25,7 +26,7 @@ const Sidebar = () => {
   const handleLogout = async () => {
     await logout();
     sendIsOnlineAlert(auth?.user);
-    disconnectSocketClient(); 
+    disconnectSocketClient();
     navigate('/');
   }
 
@@ -42,42 +43,52 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className='sidebar'>
-      <div className='logo-container'>
-        <img src={UniVerseLogo}/>
-        UniVerse
-      </div>
-      <div className='profile-container'>
-        <div className='profile-picture'>
-          {profilePicture?.size > 0 ? 
-          <img src={URL.createObjectURL(profilePicture)} alt="ProfilePicture" /> 
-          :
-          <FaUserAstronaut className='profile-picture-placeholer-icon'/>}
+      <aside className='sidebar'>
+        <div className='logo-container'>
+          <img src={UniVerseLogo}/>
+          UniVerse
         </div>
-        <label className='username' onClick={() => navigate(`/profile/${auth.user}`)}>{auth.user}</label> 
-        <button onClick={handleLogout} className='confirm-button'>Log Out</button>         
-      </div>
+        {auth?.role === "ADMIN" &&
+            <div className='admin-nav-button-container'>
+              <Link to="/admin" className='link'>
+                <button className={isActive("/admin")}>
+                  <MdAdminPanelSettings className='link-icon'/>
+                  Admin
+                </button>
+              </Link>
+            </div>
+        }
+        <div className='profile-container'>
+          <div className='profile-picture'>
+            {profilePicture?.size > 0 ?
+                <img src={URL.createObjectURL(profilePicture)} alt="ProfilePicture" />
+                :
+                <FaUserAstronaut className='profile-picture-placeholer-icon'/>}
+          </div>
+          <label className='username' onClick={() => navigate(`/profile/${auth.user}`)}>{auth.user}</label>
+          <button onClick={handleLogout} className='confirm-button'>Log Out</button>
+        </div>
 
-      <ul>
-        {linksData.map((link) =>
-          <li key={link.id}>
-            <Link key={link.id} to={link.to} className='link'>
-              <button key={link.id} className={isActive(link.to)}>
-                <img src={link.icon} className='link-icon'/>
-                {link.text}
-              </button>
-            </Link>
-          </li>
-        )}
-      </ul>
+        <ul>
+          {linksData.map((link) =>
+              <li key={link.id}>
+                <Link key={link.id} to={link.to} className='link'>
+                  <button key={link.id} className={isActive(link.to)}>
+                    <img src={link.icon} className='link-icon'/>
+                    {link.text}
+                  </button>
+                </Link>
+              </li>
+          )}
+        </ul>
 
-      <Link to='/settings' className='link settings-link'>
-        <button className={isActive('/settings')}>
-          <img src={SettingsIcon} className='link-icon'/>
-          Settings
-        </button>
-      </Link>
-    </aside>
+        <Link to='/settings' className='link settings-link'>
+          <button className={isActive('/settings')}>
+            <img src={SettingsIcon} className='link-icon'/>
+            Settings
+          </button>
+        </Link>
+      </aside>
   )
 }
 

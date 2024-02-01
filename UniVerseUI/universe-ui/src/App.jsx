@@ -16,40 +16,42 @@ import ErrorPage from './pages/ErrorPage'
 import NotFound from './pages/NotFound'
 import PersistLogin from './routes/PersistLogin'
 import RouterErrorFallback from './components/fallbacks/RouterErrorFallback'
+import Admin from './pages/Admin'
 
 function App() {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route errorElement={<ErrorPage/>}>
-        <Route path="/" element={<Landing/>}/>
-        <Route element={<MainLayout/>}>
-          <Route element={<PersistLogin/>}>
-            <Route element={<ProtectedRoute/>} errorElement={<RouterErrorFallback/>}>
-              <Route path="/home" element={<Home/>}/>
-              <Route path="/profile/:username" element={<Profile/>}/>
-              <Route path="/news" element={<News/>}/>
-              <Route path="/news/:newsId" element={<NewsDetails/>}/>
-              <Route path="/jobs" element={<Jobs/>}/>
-              <Route path="/jobs/:jobId" element={<JobDetails/>}/>
-              <Route path="/events" element={<Events/>}/>
-              <Route path="/chats" element={<ChatsLayout/>}>
-                <Route path="/chats" element={<div className='chat-not-selected'>Select chat</div>}/>
-                <Route path="/chats/:username" element={<Chat/>}/>
-              </Route>
-              <Route path="/settings" element={<Settings/>}/>
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route errorElement={<ErrorPage/>}>
+                <Route path="/" element={<Landing/>}/>
+                <Route element={<MainLayout/>}>
+                    <Route element={<PersistLogin/>}>
+                        <Route element={<ProtectedRoute/>} errorElement={<RouterErrorFallback/>}>
+                            <Route path="/admin" element={<Admin/>}/>
+                            <Route path="/home" element={<Home/>}/>
+                            <Route path="/profile/:username" element={<Profile/>}/>
+                            <Route path="/news" element={<News/>}/>
+                            <Route path="/news/:newsId" element={<NewsDetails/>}/>
+                            <Route path="/jobs" element={<Jobs/>}/>
+                            <Route path="/jobs/:jobId" element={<JobDetails/>}/>
+                            <Route path="/events" element={<Events/>}/>
+                            <Route path="/chats" element={<ChatsLayout/>}>
+                                <Route path="/chats" element={<div className='chat-not-selected'>Select chat</div>}/>
+                                <Route path="/chats/:username" element={<Chat/>}/>
+                            </Route>
+                            <Route path="/settings" element={<Settings/>}/>
+                        </Route>
+                    </Route>
+                </Route>
+                <Route path="*" element={<NotFound/>} />
             </Route>
-          </Route>
-        </Route>
-        <Route path="*" element={<NotFound/>} />
-      </Route>
-    )
-  );
+        )
+    );
 
-  return (
-    <div className='app-container'>
-      <RouterProvider router={router}/>
-    </div>
-  )
+    return (
+        <div className='app-container'>
+            <RouterProvider router={router}/>
+        </div>
+    )
 }
 
 export default App

@@ -42,10 +42,10 @@ export const getUserFriendRequests = async (username) =>{
 
 export const checkFriendship = async (usernameUser1, usernameUser2) => {
     const response = await axios.get('/friendships/check-friendship', {
-      params: {
-        usernameUser1,
-        usernameUser2,
-      },
+        params: {
+            usernameUser1,
+            usernameUser2,
+        },
     });
 
     return response.data;
@@ -80,5 +80,20 @@ export const confirmPassword = async ({ username, password }) =>{
 
 export const updateUserProfile = async (data) =>{
     const response = await axios.post('/users/update-profile', data);
+    return response.data;
+}
+
+export const getUserRegistrationRequests = async () =>{
+    const resposne = await axios.get('/users/registration-requests')
+    return resposne.data;
+}
+
+export const approveUser = async (userId) => {
+    const response = await axios.put(`/users/${userId}/approve`);
+    return response.data;
+}
+
+export const rejectUser = async (userId) => {
+    const response = await axios.delete(`/users/${userId}/reject`);
     return response.data;
 }
